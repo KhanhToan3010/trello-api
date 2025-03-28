@@ -18,12 +18,11 @@ const createNew = async (req, res, next) => {
   })
 
   try {
-    console.log(req.body)
+
     // set abortEarly to false to allow validation to continue
     await correctCondition.validateAsync(req.body, { abortEarly: false })
-    //next()
-    res.status(StatusCodes.CREATED).json({ message: 'POST from Validation: APIs creat new board' })
-
+    // validate success -> cho request next ( controller )
+    next()
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(error)
