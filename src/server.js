@@ -6,14 +6,16 @@ import { CONNECT_DB, GET_DB, CLOSE_DB } from '~/config/mongodb'
 import 'dotenv/config'
 import { env } from '~/config/environment'
 import { APIs_V1 } from '~/routes/v1'
+import { errorHandlingMiddleware } from '~/middlewares/errHandlingMiddleware'
 
 const START_SERVER = () => {
   const app = express()
-
+  // Enable req.body to be parsed as JSON
   app.use(express.json())
-
+  // use APIs v1
   app.use('/v1', APIs_V1)
-
+  // Middleware xu li loi tap trung
+  app.use(errorHandlingMiddleware)
   app.listen(env.APP_PORT, env.APP_HOST, () => {
   // eslint-disable-next-line no-console
     console.log(`3. Hello ${env.AUTHOR}, Server is running Successful!  ${env.APP_HOST}:${env.APP_PORT}/`)
