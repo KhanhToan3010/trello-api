@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 
 import express from 'express'
+import cors from 'cors'
+import { corsOptions} from '~/config/cors'
 import exitHook from 'async-exit-hook'
 import { CONNECT_DB, GET_DB, CLOSE_DB } from '~/config/mongodb'
 import 'dotenv/config'
@@ -10,6 +12,7 @@ import { errorHandlingMiddleware } from '~/middlewares/errHandlingMiddleware'
 
 const START_SERVER = () => {
   const app = express()
+  app.use(cors(corsOptions))
   // Enable req.body to be parsed as JSON
   app.use(express.json())
   // use APIs v1
