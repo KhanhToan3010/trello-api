@@ -4,7 +4,7 @@
 import Joi from 'joi'
 import { StatusCodes } from 'http-status-codes'
 import ApiError from '~/utils/ApiError'
-import { BOARD_TYPES} from '~/utils/constants'
+import { BOARD_TYPES } from '~/utils/constants'
 
 const createNew = async (req, res, next) => {
   const correctCondition = Joi.object({
@@ -20,7 +20,6 @@ const createNew = async (req, res, next) => {
   })
 
   try {
-
     // set abortEarly to false to allow validation to continue
     await correctCondition.validateAsync(req.body, { abortEarly: false })
     // validate success -> cho request next ( controller )
