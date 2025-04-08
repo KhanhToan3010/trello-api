@@ -19,6 +19,9 @@ const COLUMN_COLLECTION_SCHEMA = Joi.object({
   _destroy: Joi.boolean().default(false)
 })
 
+// chi dinh cac field khong duoc update
+const INVALID_UPDATE_FIELDS = ['_id', 'careatedAt', 'boardId']
+
 const validateBeforeCreate = async (data) => {
   return await COLUMN_COLLECTION_SCHEMA.validateAsync(data, { abortEarly: false })
 }
@@ -53,11 +56,30 @@ const pushCardOderedIds = async (card) => {
       { $push: { cardOrderIds: new ObjectId(card._id) } },
       { returnDocument: 'after' }
     )
-    return result.value
+    return result
 
   } catch (error) {
     throw new Error(error)
   }
+
+}
+
+const update = async (columnId, updateData) => {
+  try {
+    Object.keys(updateData).forEach( fieldName => {
+      if (INVALID_UPDATE_FIELDS.includes(fieldName)) {
+        delete updateData[fieldName]
+      }
+    })
+    //console.log('updateData: ', updateData)
+    const result = await GET_DB().collection(COLUMN_COLLECTION_NAME).findOneAndUpdate(
+      { _id: new ObjectId(columnId) },
+      { $set: updateData },
+      { returnDocument: 'after' }
+    )
+    return result
+
+  } catch (error) { throw new Error(error) }
 
 }
 
@@ -66,5 +88,6 @@ export const columnModel = {
   COLUMN_COLLECTION_SCHEMA,
   createNew,
   findOneById,
-  pushCardOderedIds
+  pushCardOderedIds,
+  update
 }

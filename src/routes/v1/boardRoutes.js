@@ -4,7 +4,7 @@
 import express from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { boardValidation } from '~/validations/boardValidation'
-import { boardController} from '~/controllers/boardController'
+import { boardController } from '~/controllers/boardController'
 
 const Router = express.Router()
 
@@ -16,5 +16,5 @@ Router.route('/')
 
 Router.route('/:id')
   .get(boardController.getDetails)
-  .put()
+  .put(boardValidation.update, boardController.update)
 export const boardRoutes = Router
