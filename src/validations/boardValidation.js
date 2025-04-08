@@ -36,6 +36,36 @@ const createNew = async (req, res, next) => {
   }
 }
 
+const update = async (req, res, next) => {
+  const correctCondition = Joi.object({
+    // trong update khong su dung ham required()
+    title: Joi.string().min(3).max(50).trim().strict(),
+    description: Joi.string().min(3).max(255).trim().strict(),
+    type: Joi.string().valid(BOARD_TYPES.PUBLIC, BOARD_TYPES.PRIVATE)
+  })
+
+  try {
+    // set abortEarly to false to allow validation to continue
+    //  allowUnknown: true - cho phep nhung thuoc tinh khong co trong schema
+    await correctCondition.validateAsync(req.body, {
+      abortEarly: false,
+      allowUnknown: true
+    })
+    // validate success -> cho request next ( controller )
+    next()
+  } catch (error) {
+    const errorMessage = new Error(error).message
+    const customError = new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, errorMessage)
+    next(customError)
+    // eslint-disable-next-line no-console
+    // console.log(error)
+    // res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
+    //   errors: new Error(error).message
+    // })
+  }
+}
+
 export const boardValidation = {
-  createNew
+  createNew,
+  update
 }
