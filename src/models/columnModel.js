@@ -61,7 +61,6 @@ const pushCardOderedIds = async (card) => {
   } catch (error) {
     throw new Error(error)
   }
-
 }
 
 const update = async (columnId, updateData) => {
@@ -71,6 +70,11 @@ const update = async (columnId, updateData) => {
         delete updateData[fieldName]
       }
     })
+
+    // convert String to ObjectId type if it exists in updateData
+    if (updateData.cardOrderIds) {
+      updateData.cardOrderIds = updateData.cardOrderIds.map( _id => (new ObjectId(_id)))
+    }
     //console.log('updateData: ', updateData)
     const result = await GET_DB().collection(COLUMN_COLLECTION_NAME).findOneAndUpdate(
       { _id: new ObjectId(columnId) },
@@ -82,6 +86,7 @@ const update = async (columnId, updateData) => {
   } catch (error) { throw new Error(error) }
 
 }
+
 
 export const columnModel = {
   COLUMN_COLLECTION_NAME,
