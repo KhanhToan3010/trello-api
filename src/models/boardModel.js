@@ -42,10 +42,10 @@ const createNew = async (data) => {
   } catch (error) { throw new Error(error) }
 }
 
-const findOneById = async (id) => {
+const findOneById = async (boardId) => {
   try {
-    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({ 
-      _id: new ObjectId(id)
+    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({
+      _id: new ObjectId(boardId)
     })
     return result
   } catch (error) { throw new Error(error) }
@@ -91,6 +91,20 @@ const pushColumnOderedIds = async (column) => {
 
 }
 
+// Update ColumnOrderIds trong board ( dung $pull ong mongoDB de lay 1 ptu columnId ra khoi mang va xoa no)
+const pullColumnOderedIds = async (column) => {
+  try {
+    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate(
+      { _id: new ObjectId(column.boardId) },
+      { $pull: { columnOrderIds: new ObjectId(column._id) } },
+      { returnDocument: 'after' }
+    )
+    return result
+
+  } catch (error) { throw new Error(error) }
+
+}
+
 const update = async (boardId, updateData) => {
   try {
     Object.keys(updateData).forEach( fieldName => {
@@ -122,5 +136,6 @@ export const boardModel = {
   findOneById,
   getDetails,
   pushColumnOderedIds,
-  update
+  update,
+  pullColumnOderedIds
 }
