@@ -11,8 +11,8 @@ import ApiError from '~/utils/ApiError'
 // Cấu hình CORS Option trong dự án thực tế (Video số 62 trong chuỗi MERN Stack Pro)
 export const corsOptions = {
   origin: function (origin, callback) {
-    // Cho phép việc gọi API bằng POSTMAN trên môi trường dev,
-    if (!origin && env.BUILD_MODE === 'dev') {
+    // local dev --> next
+    if ( env.BUILD_MODE === 'dev') {
       return callback(null, true)
     }
 
