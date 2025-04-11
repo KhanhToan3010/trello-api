@@ -5,9 +5,6 @@
 
 - Playlist khóa Advanced: https://youtube.com/playlist?list=PLP6tw4Zpj-RJbPQfTZ0eCAXH_mHQiuf2G&si=zmt9y6TYo-e3sIwv
 
-### Hướng dẫn clone Repo code này về máy các bạn chuẩn nhất ở video này:
-
-- Cấu trúc dự án nâng cao, chuẩn thực tế, có Babel, ESLint...vv | NodeJS + MongoDB. Link: https://youtu.be/8hhXamKIdsY
 
 ---
 : (Semantic Versioning)
