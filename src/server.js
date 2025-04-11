@@ -19,10 +19,22 @@ const START_SERVER = () => {
   app.use('/v1', APIs_V1)
   // Middleware xu li loi tap trung
   app.use(errorHandlingMiddleware)
-  app.listen(env.APP_PORT, env.APP_HOST, () => {
-  // eslint-disable-next-line no-console
-    console.log(`3. Hello ${env.AUTHOR}, Server is running Successful!  ${env.APP_HOST}:${env.APP_PORT}/`)
-  })
+
+  if (env.BUILD_MODE === 'production') {
+    // moi truong production ( render.com)
+    app.listen(process.env.PORT, () => {
+      // eslint-disable-next-line no-console
+      console.log(`3. Production: ${env.AUTHOR}, Server is running Successful! at Port:  ${process.env.PORT}`)
+    })
+
+  } else {
+    // moi truong local dev
+    app.listen(env.LOCAL_DEV_APP_PORT, env.LOCAL_DEV_APP_HOST, () => {
+      // eslint-disable-next-line no-console
+      console.log(`3. Local dev: ${env.AUTHOR}, Server is running Successful!  ${env.LOCAL_DEV_APP_HOST}:${env.LOCAL_DEV_APP_PORT}`)
+    })
+  }
+
   exitHook(() => {
     console.log('4. Server is shutting down...')
     CLOSE_DB()
